@@ -1,0 +1,23 @@
+const int encoderPinA = 2; // attach encoder pin A to interrupt 0
+const int encoderPinB = 3; // attach encoder pin B to digital pin 3
+volatile int encoderPos = 0; // initialize encoder position
+
+void setup() {
+  pinMode(encoderPinB, INPUT_PULLUP); // enable internal pull-up resistor for pin B
+  attachInterrupt(digitalPinToInterrupt(encoderPinA), updateEncoder, CHANGE); // attach interrupt to pin A
+  Serial.begin(9600); // initialize serial communication
+}
+
+void loop() {
+  // read encoder position and print to serial monitor
+  Serial.println(encoderPos);
+  delay(100);
+}
+
+void updateEncoder() {
+  if (digitalRead(encoderPinB) == HIGH) {
+    encoderPos++;
+  } else {
+    encoderPos--;
+  }
+}
