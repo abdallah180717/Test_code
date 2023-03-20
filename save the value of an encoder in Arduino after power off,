@@ -1,0 +1,27 @@
+#include <EEPROM.h>
+
+int pinA = 2; // rotary encoder pin A connected to digital pin 2
+int pinB = 3; // rotary encoder pin B connected to digital pin 3
+int encoderValue = 0; // variable to store the encoder value
+
+void setup() {
+  pinMode(pinA, INPUT_PULLUP);
+  pinMode(pinB, INPUT_PULLUP);
+  Serial.begin(9600);
+  // retrieve the encoder value from EEPROM
+  encoderValue = EEPROM.read(0);
+}
+
+void loop() {
+  int a = digitalRead(pinA);
+  int b = digitalRead(pinB);
+  if (a == LOW && b == HIGH) {
+    encoderValue++;
+  } else if (a == HIGH && b == LOW) {
+    encoderValue--;
+  }
+  Serial.println(encoderValue);
+  // save the encoder value to EEPROM
+  EEPROM.write(0, encoderValue);
+  delay(1000); // add a delay to prevent EEPROM wear
+}
